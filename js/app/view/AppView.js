@@ -6,50 +6,41 @@ var AppView = BaseView.extend({
 
     // Instead of generating a new element, bind to the existing skeleton of
     // the App already present in the HTML.
-    el: $("#todoapp"),
+    el: $("#appView"),
 
     // Our template for the line of statistics at the bottom of the app.
-    statsTemplate: _.template($('#stats-template').html()),
+    //statsTemplate: _.template($('#stats-template').html()),
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
-        "keypress #new-todo":  "createOnEnter"
+        "click #createItem":  "createItem"
         /*"click #clear-completed": "clearCompleted",
         "click #toggle-all": "toggleAllComplete"*/
     },
 
-    // At initialization we bind to the relevant events on the `Todos`
-    // collection, when items are added or changed. Kick things off by
-    // loading any preexisting todos that might be saved in *localStorage*.
     initialize: function() {
+        this.$newItem = this.$("#newItem");
+        this.$allItems = this.$("#allItems");
 
-        this.input = this.$("#new-todo");
-        this.allCheckbox = this.$("#toggle-all")[0];
-
-        ItemList.bind('add', this.addOne, this);
+/*        ItemList.bind('add', this.addOne, this);
         ItemList.bind('reset', this.addAll, this);
         ItemList.bind('all', this.render, this);
 
-        this.footer = this.$('footer');
-        this.main = $('#main');
-
-        ItemList.fetch();
+        ItemList.fetch();*/
     },
 
-    // Re-rendering the App just means refreshing the statistics -- the rest
-    // of the app doesn't change.
     render: function() {
 /*        var done = ItemList.done().length;
         var remaining = ItemList.remaining().length;*/
 
-        if (ItemList.length) {
+/*        if (ItemList.length) {
             this.main.show();
-/*            this.footer.show();
-            this.footer.html(this.statsTemplate({done: done, remaining: remaining}));*/
+            this.footer.show();
+            this.footer.html(this.statsTemplate({done: done, remaining: remaining}));
         } else {
             this.main.hide();
-/*            this.footer.hide();*/
-        }
+            this.footer.hide();
+        }*/
 
   /*      this.allCheckbox.checked = !remaining;*/
     },
@@ -66,26 +57,14 @@ var AppView = BaseView.extend({
         ItemList.each(this.addOne);
     },
 
-    // If you hit return in the main input field, create new **Todo** model,
-    // persisting it to *localStorage*.
-    createOnEnter: function(e) {
-        if (e.keyCode != 13) return;
+    createItem: function(e) {
+        alert('Create Item');
+/*        if (e.keyCode != 13) return;
         if (!this.input.val()) return;
 
         ItemList.create({name: this.input.val(),level:60});
-        this.input.val('');
+        this.input.val('');*/
     }
-
-/*    // Clear all done todo items, destroying their models.
-    clearCompleted: function() {
-        _.each(Todos.done(), function(todo){ todo.clear(); });
-        return false;
-    },
-
-    toggleAllComplete: function () {
-        var done = this.allCheckbox.checked;
-        Todos.each(function (todo) { todo.save({'done': done}); });
-    }*/
 
 });
 
