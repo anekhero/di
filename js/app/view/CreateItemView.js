@@ -61,7 +61,12 @@ var CreateItemView = BaseView.extend({
         console.log('CreateItemView.changeItem');
         this.model.set('title',this.$('[name=title]').val());
         this.model.set('type',this.$('[name=type]').val());
-        this.model.setStats('vit',500);
+
+        var stats = {};
+        var t = this.$('.item-stat').map(function(){
+            stats[$(this).find('select').val()] = $(this).find('input').val()
+        });
+        this.model.setStats(stats);
     },
 
     cancelItem: function() {
