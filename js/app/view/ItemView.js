@@ -39,8 +39,11 @@ var ItemView = BaseView.extend({
 
 
     removeItem: function() {
-        console.log('remove');
-        this.model.destroy();
+        console.log('ItemView.removeItem');
+        if(this.model.get('draft') || confirm('Actually remove the Item?'))
+        {
+            this.model.destroy();
+        }
     },
 
     showDetails: function() {

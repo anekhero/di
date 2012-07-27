@@ -66,7 +66,6 @@ var CreateItemView = BaseView.extend({
 
     cancelItem: function() {
         console.log('CreateItemView.cancelItem');
-        confirm('You')
         this.model.destroy();
     },
 
