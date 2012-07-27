@@ -20,8 +20,8 @@ body {
 
 <div id="appView">
     <div id="createItem">Add New Item</div>
-    <div id="newItem"></div>
     <div id="allItems"></div>
+    <div id="newItem"></div>
 </div>
 
 
@@ -30,17 +30,49 @@ body {
     <div><%= title %></div>
 </script>
 
-<script type="text/template" id="create-item-template">
-    <div>Create New Item for Add</div>
-    <div><label>Type</label><select><option>Belt</option><option>Boots</option></select></div>
+<script type="text/template" id="item-template">
+    <div>- Item <%= title %>, Type: <%= type %>,
+
+        <% _.each(stats, function(value,name){ print(name+':'+value) %> ,<% }) %>
+    <a class="remove-item-button">[remove]</a><% if (draft) { %> Draft<% } %></div>
 </script>
 
+<script type="text/template" id="create-item-template">
+    <div>Create New Item for Add</div>
+    <div><label>Title</label><input name="title" value="<%= title %>"></div>
+    <div><label>Type</label><select name="type">
+        <option value="belt">Belt</option>
+        <option value="boots">Boots</option>
+        <option value="shild">Shild</option>
+    </select></div>
+    <div class="item-stats"></div>
+    <div><button class="create-item-button">Create</button> <button class="cancel-item-button">Cancel</button></div>
+</script>
+
+<script type="text/template" id="create-stat-template">
+    <div class="item-stat"><label>Stat</label><select>
+        <option value=" "> </option>
+        <option value="str">Strength</option>
+        <option value="dex">Dexterity</option>
+        <option value="int">Intelligence</option>
+        <option value="vit">Vitality</option>
+    </select><input value="<%= value %>"></div>
+</script>
+
+<script src="js/core/sha1.js"></script>
+<script src="js/core/json2.js"></script>
 <script src="js/core/underscore.js"></script>
 <script src="js/core/zepto.js"></script>
-<script src="js/core/json2.js"></script>
 <script src="js/core/backbone.js"></script>
+<script src="js/core/backbone.localStorage.js"></script>
 <script src="js/core/BaseView.js"></script>
 
+<script src="js/app/model/ItemAbstract.js"></script>
+<script src="js/app/model/Item.js"></script>
+
+<script src="js/app/collection/Items.js"></script>
+
+<script src="js/app/view/ItemView.js"></script>
 <script src="js/app/view/CreateItemView.js"></script>
 <script src="js/app/view/AppView.js"></script>
 

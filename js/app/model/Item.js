@@ -1,0 +1,3 @@
+var Item = ItemAbstract.extend({
+
+});

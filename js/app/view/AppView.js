@@ -19,14 +19,13 @@ var AppView = BaseView.extend({
     },
 
     initialize: function() {
-        this.$newItem = this.$("#newItem");
-        this.$allItems = this.$("#allItems");
+        this.newItem = this.$("#newItem");
+        this.allItems = this.$("#allItems");
 
-/*        ItemList.bind('add', this.addOne, this);
+        ItemList.bind('add', this.addOne, this);
         ItemList.bind('reset', this.addAll, this);
         ItemList.bind('all', this.render, this);
-
-        ItemList.fetch();*/
+        ItemList.fetch();
     },
 
     render: function() {
@@ -48,8 +47,13 @@ var AppView = BaseView.extend({
     // Add a single todo item to the list by creating a view for it, and
     // appending its element to the `<ul>`.
     addOne: function(item) {
+        console.log('addOne d:'+item.get('draft'));
         var view = new ItemView({model: item});
-        this.$("#todo-list").append(view.render().el);
+        this.$("#allItems").append(view.render().el);
+/*
+        var view = new CreateItemView({model: item});
+        this.$("#newItem").append(view.render().el);
+*/
     },
 
     // Add all items in the **Todos** collection at once.
@@ -58,12 +62,11 @@ var AppView = BaseView.extend({
     },
 
     createItem: function(e) {
-        alert('Create Item');
-/*        if (e.keyCode != 13) return;
-        if (!this.input.val()) return;
-
-        ItemList.create({name: this.input.val(),level:60});
-        this.input.val('');*/
+        console.log('Create Item');
+        var item = ItemList.create({title:'new item',type:'shild'});
+        // @todo remove old view
+        var view = new CreateItemView({model: item});
+        this.$("#newItem").html(view.render().el);
     }
 
 });
