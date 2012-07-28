@@ -9,7 +9,10 @@ var CreateItemView = BaseView.extend({
 
     // Cache the template function for a single item.
     template: _.template($('#create-item-template').html()),
+    itemTypeTemplate: _.template($('#item-type-template').html()),
+    itemTypeHTML: '',
     createStatTemplate: _.template($('#create-stat-template').html()),
+    createStatHTML: '',
 
     // The DOM events specific to an item.
     events: {
@@ -31,17 +34,21 @@ var CreateItemView = BaseView.extend({
         this.model.bind('change', this.render, this);
         this.model.bind('destroy', this.remove, this);
         //this.model.bind('add', this.addOne, this);
+
+        // @TODO move to "once load"
+        this.renderItemTypeTemplate();
+        this.renderStatTemplate();
     },
 
     // Re-render the titles of the todo item.
     render: function() {
         this.$el.html(this.template(this.model.toJSON()));
-        this.$('select').val(this.model.get('type'));
+        this.$('select').html(this.itemTypeHTML).val(this.model.get('type'));
         var o=this;
         _.each(this.model.get('stats'),function(value,name){
             o.createStat(name,value);
         });
-        this.createStat();
+        this.check4NewStat();
         /*this.$el.toggleClass('done', this.model.get('done'));
         this.input = this.$('.edit');*/
         return this;
@@ -64,7 +71,7 @@ var CreateItemView = BaseView.extend({
 
         var stats = {};
         var t = this.$('.item-stat').map(function(){
-            stats[$(this).find('select').val()] = $(this).find('input').val()
+            stats[$(this).find('select').val()] = $(this).find('input').val();
         });
         this.model.setStats(stats);
     },
@@ -76,16 +83,34 @@ var CreateItemView = BaseView.extend({
 
     check4NewStat: function() {
         console.log('CreateItemView.check4NewStat');
-        var foundEmptyStats=this.$('.item-stat select').map(function(){return $(this).val()}).indexOf(' ');
-        if(foundEmptyStats==-1) this.createStat();
+        var mustAddEmptyStat = true;
+        this.$('.item-stat select').each(function(){ if(!$(this).val()) mustAddEmptyStat=false; });
+        if(mustAddEmptyStat) this.createStat();
     },
 
     createStat: function(name,value) {
         console.log('CreateItemView.createStat');
-        if(typeof(name)=='undefined')name=' ';
-        if(typeof(value)=='undefined')value=' ';
-        this.$('.item-stats').append(this.createStatTemplate({'name':name,'value':value}));
+        if(typeof(name)=='undefined')name='';
+        if(typeof(value)=='undefined')value='';
+        this.$('.item-stats').append(this.createStatHTML);
         this.$('.item-stats').find('select').last().val(name);
+        this.$('.item-stats').find('input').last().val(value);
+    },
+
+    renderStatTemplate: function() {
+        var stats = {'':''};
+        _.each(this.model.statsList, function(v,k){
+            stats[k] = tools.abbr2text(k);
+        });
+        this.createStatHTML = this.createStatTemplate({'stats':stats});
+    },
+
+    renderItemTypeTemplate: function() {
+        var types = {'':''};
+        _.each(this.model.typesList, function(v,k){
+            types[k] = tools.abbr2text(k);
+        });
+        this.itemTypeHTML = this.itemTypeTemplate({'types':types});
     },
 
     showDetails: function() {

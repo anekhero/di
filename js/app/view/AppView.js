@@ -63,7 +63,7 @@ var AppView = BaseView.extend({
 
     createItem: function(e) {
         console.log('Create Item');
-        var item = ItemList.create({title:'new item',type:'shild'});
+        var item = ItemList.create({title:'New item'});
         // @todo remove old view
         var view = new CreateItemView({model: item});
         this.$("#newItem").html(view.render().el);

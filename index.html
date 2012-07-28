@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width">
 <link rel="canonical" href="http://backbonejs.org" />
 <link rel="icon" href="docs/images/favicon.ico" />
-<title>Backbone.js</title>
+<title>Diablo III Item helper</title>
 <style>
 body {
     font-size: 14px;
@@ -40,23 +40,23 @@ body {
 <script type="text/template" id="create-item-template">
     <div>Create New Item for Add</div>
     <div><label>Title</label><input name="title" value="<%= title %>"></div>
-    <div><label>Type</label><select name="type">
-        <option value="belt">Belt</option>
-        <option value="boots">Boots</option>
-        <option value="shild">Shild</option>
-    </select></div>
+    <div><label>Type</label><select name="type"></select></div>
     <div class="item-stats"></div>
     <div><button class="create-item-button">Create</button> <button class="cancel-item-button">Cancel</button></div>
 </script>
 
 <script type="text/template" id="create-stat-template">
     <div class="item-stat"><label>Stat</label><select>
-        <option value=" "> </option>
-        <option value="str">Strength</option>
-        <option value="dex">Dexterity</option>
-        <option value="int">Intelligence</option>
-        <option value="vit">Vitality</option>
-    </select><input value="<%= value %>"></div>
+        <% _.each(stats, function(label,key){ %>
+            <option value="<%= key %>"><%= label %></option>
+        <% }) %>
+    </select><input value=""></div>
+</script>
+
+<script type="text/template" id="item-type-template">
+        <% _.each(types, function(label,key){ %>
+            <option value="<%= key %>"><%= label %></option>
+        <% }) %>
 </script>
 
 <script src="js/core/sha1.js"></script>
@@ -67,6 +67,7 @@ body {
 <script src="js/core/backbone.localStorage.js"></script>
 <script src="js/core/BaseView.js"></script>
 
+<script src="js/app/model/ToolBox.js"></script>
 <script src="js/app/model/ItemAbstract.js"></script>
 <script src="js/app/model/Item.js"></script>
 
