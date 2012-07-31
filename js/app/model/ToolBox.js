@@ -8,6 +8,9 @@ var ToolBox = Backbone.Model.extend({
         'int' : 'Intelligence',
         'vit' : 'Vitality',
 
+        'extraGHFG' : 'Extra Globe Health from globes',
+
+
         'helm' : 'Helm',
         'spirit_stone':'Spirit Stone',
         'voodoo_mask':'Voodoo Mask',
