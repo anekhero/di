@@ -2,7 +2,40 @@ var ToolBox = Backbone.Model.extend({
     defaults : {
     },
 
+
+
+    classList : {
+        'barbarian' : Barbarian,
+        'demon_hunter' : DemonHunter,
+        'monk' : Monk,
+        'witch_doctor' : WitchDoctor,
+        'wizard' : Wizard
+    },
+
     text4abbr : {
+
+        'barbarian' : 'Barbarian',
+        'demon_hunter' : 'Demon Hunter',
+        'monk' : 'Monk',
+        'witch_doctor' : 'Witch Doctor',
+        'wizard' : 'Wizard',
+
+        'head':'Head',
+        'shoulders':'Shoulders',
+        'torso':'Torso',
+        'wrists':'Wrists',
+        'hands':'Hands',
+        'waist':'Waist',
+        'legs':'Legs',
+        'feet':'Feet',
+        'neck':'Neck',
+        'finger_right':'Finger',
+        'finger_left':'Finger',
+        'hand':'Hand',
+        'off_hand':'Off-Hand',
+
+
+
         'str' : 'Strength',
         'dex' : 'Dexterity',
         'int' : 'Intelligence',
@@ -59,6 +92,22 @@ var ToolBox = Backbone.Model.extend({
 
     abbr2text : function(abbr) {
         return (this.text4abbr[abbr]) ? this.text4abbr[abbr] : '???';
+    },
+
+    getClassesList : function() {
+         return {
+             'barbarian' : 'Barbarian',
+             'demon_hunter' : 'Demon Hunter',
+             'monk' : 'Monk',
+             'witch_doctor' : 'Witch Doctor',
+             'wizard' : 'Wizard'
+        };
+    },
+
+    getClassByName : function(name) {
+        console.log('getClassByName '+name);
+        if(this.classList[name]) return this.classList[name];
+        else return false;
     }
 });
 

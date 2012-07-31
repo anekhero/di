@@ -14,14 +14,32 @@ body {
     font-family: Helvetica Neue, Helvetica, Arial;
     background: #f4f4f4;
 }
+    #allItems{
+        position: absolute;
+        right: 0;
+        width: 300px;
+        padding: 10px;
+        border: #cccccc 1px solid;
+        background-color: #eeeeee;
+    }
+    .remove-item-button{
+        cursor: pointer;
+    }
+    .remove-item-button:hover{
+        background-color: red;
+        color: #ffffff;
+    }
 </style>
 </head>
 <body>
 
 <div id="appView">
-    <div id="createItem">Add New Item</div>
     <div id="allItems"></div>
+    <div id="createItem">Add New Item</div>
+    <div id="createCharacter">Add New Character</div>
     <div id="newItem"></div>
+    <div id="newCharacter"></div>
+    <div id="characterFrame"></div>
 </div>
 
 
@@ -31,10 +49,12 @@ body {
 </script>
 
 <script type="text/template" id="item-template">
-    <div>- Item <%= title %>, Type: <%= type %>,
+    <div>
+        <div>* <b><%= type %></b> <%= title %> <a class="remove-item-button">[X]</a><% if (draft) { %> Draft<% } %></div>
 
         <% _.each(stats, function(value,name){ print(name+':'+value) %> ,<% }) %>
-    <a class="remove-item-button">[remove]</a><% if (draft) { %> Draft<% } %></div>
+
+    </div>
 </script>
 
 <script type="text/template" id="create-item-template">
@@ -59,6 +79,30 @@ body {
         <% }) %>
 </script>
 
+
+<script type="text/template" id="create-character-template">
+    <div>Select Class of your new Hero</div>
+    <div><label>Name</label><input value=""></div>
+    <div><label>Class</label><select>
+        <% _.each(classes, function(label,key){ %>
+        <option value="<%= key %>"><%= label %></option>
+        <% }) %>
+    </select></div>
+    <div><button class="create-character-button">Create</button> <button class="cancel-character-button">Cancel</button></div>
+</script>
+
+<script type="text/template" id="character-template">
+    <div>Hero</div>
+    <div><b><%= heroClass %></b> <%= name %></div>
+    <div><label>Level</label><input name="level" value="<%= level %>"></div>
+    <div><label>Шмот</label><div class="character-items"></div></div>
+    <div><label></label><div class="character-stats"></div></div>
+    <div><label></label><div class="character-details"></div></div>
+</script>
+
+
+
+
 <script src="js/core/sha1.js"></script>
 <script src="js/core/json2.js"></script>
 <script src="js/core/underscore.js"></script>
@@ -67,15 +111,25 @@ body {
 <script src="js/core/backbone.localStorage.js"></script>
 <script src="js/core/BaseView.js"></script>
 
-<script src="js/app/model/ToolBox.js"></script>
 <script src="js/app/model/ItemAbstract.js"></script>
 <script src="js/app/model/Item.js"></script>
+<script src="js/app/model/CharacterAbstract.js"></script>
+<script src="js/app/model/Barbarian.js"></script>
+<script src="js/app/model/DemonHunter.js"></script>
+<script src="js/app/model/Monk.js"></script>
+<script src="js/app/model/WitchDoctor.js"></script>
+<script src="js/app/model/Wizard.js"></script>
 
 <script src="js/app/collection/Items.js"></script>
+<script src="js/app/collection/Characters.js"></script>
 
 <script src="js/app/view/ItemView.js"></script>
 <script src="js/app/view/CreateItemView.js"></script>
+<script src="js/app/view/CharacterView.js"></script>
+<script src="js/app/view/CreateCharacterView.js"></script>
 <script src="js/app/view/AppView.js"></script>
+
+<script src="js/app/model/ToolBox.js"></script>
 
 </body>
 </html>

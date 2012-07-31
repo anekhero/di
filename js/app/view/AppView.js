@@ -13,7 +13,8 @@ var AppView = BaseView.extend({
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
-        "click #createItem":  "createItem"
+        "click #createItem":  "createItem",
+        "click #createCharacter":  "createCharacter"
         /*"click #clear-completed": "clearCompleted",
         "click #toggle-all": "toggleAllComplete"*/
     },
@@ -26,6 +27,14 @@ var AppView = BaseView.extend({
         ItemList.bind('reset', this.addAll, this);
         ItemList.bind('all', this.render, this);
         ItemList.fetch();
+
+        Account.fetch();
+        if(Account.length)
+        {
+            var view = new CharacterView({model: Account.at(0)});
+            this.$("#characterFrame").html(view.render().el);
+        }
+
     },
 
     render: function() {
@@ -62,11 +71,19 @@ var AppView = BaseView.extend({
     },
 
     createItem: function(e) {
-        console.log('Create Item');
+        console.log('AppView:createItem');
         var item = ItemList.create({title:'New item'});
         // @todo remove old view
         var view = new CreateItemView({model: item});
         this.$("#newItem").html(view.render().el);
+    },
+
+    createCharacter: function(e) {
+        console.log('AppView:createCharacter');
+        //var item = Account.create({name:'New character'});
+        // @todo remove old view
+        var view = new CreateCharacterView();
+        this.$("#newCharacter").html(view.render().el);
     }
 
 });
