@@ -9,10 +9,11 @@ var CharacterView = BaseView.extend({
 
     // Cache the template function for a single item.
     template: _.template($('#character-template').html()),
+    slotTemplate: _.template($('#character-slot-template').html()),
 
     // The DOM events specific to an item.
     events: {
-//        "click .remove-item-button"   : "removeItem"
+        "click .change-item-button"   : "selectItem"
 //        "dblclick .view"  : "edit",
 //        "click a.destroy" : "clear"
 //        "keypress .edit"  : "updateOnEnter",
@@ -31,19 +32,37 @@ var CharacterView = BaseView.extend({
 
     // Re-render the titles of the todo item.
     render: function() {
+        console.log('CharacterView.render');
         this.$el.html(this.template(this.model.toJSON()));
+
+        // ITEMS
+        var o=this;
+        _.each(this.model.get('slots'), function(v,k){
+            o.$('.character-items').append(o.slotTemplate({'label':tools.abbr2text(k),'name':k,'id':v}));
+        });
+
+
         /*this.$el.toggleClass('done', this.model.get('done'));
         this.input = this.$('.edit');*/
         return this;
     },
 
 
-    removeItem: function() {
-        console.log('ItemView.removeItem');
-        if(this.model.get('draft') || confirm('Actually remove the Item?'))
-        {
-            this.model.destroy();
-        }
+    selectItem: function(e) {
+        console.log('CharacterView.selectItem');
+        var slot_name = $(e.target).closest('.character-slot').attr('data-slot_name');
+        console.log(slot_name);
+
+        var o = this;
+         var itemsForSlot = ItemList.filter(function(item) {
+            if(o.model.itemTypeInSlot[item.get("type")])
+             {
+                 console.log(item.get("title"));
+                 return true;
+             }
+         });
+//         this.$('.character-items').html(this.template(this.model.toJSON()));
+
     },
 
     showDetails: function() {

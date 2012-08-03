@@ -29,6 +29,13 @@ body {
         background-color: red;
         color: #ffffff;
     }
+    .change-item-button{
+        cursor: pointer;
+    }
+    .change-item-button:hover{
+        background-color: green;
+        color: #ffffff;
+    }
 </style>
 </head>
 <body>
@@ -94,10 +101,14 @@ body {
 <script type="text/template" id="character-template">
     <div>Hero</div>
     <div><b><%= heroClass %></b> <%= name %></div>
-    <div><label>Level</label><input name="level" value="<%= level %>"></div>
-    <div><label>Шмот</label><div class="character-items"></div></div>
-    <div><label></label><div class="character-stats"></div></div>
-    <div><label></label><div class="character-details"></div></div>
+    <div><label><b>Level</b></label><input name="level" value="<%= level %>"></div>
+    <div><label><b>Шмот</b></label><div class="character-items"></div></div>
+    <div><label><b>Статсы</b></label><div class="character-stats"></div></div>
+    <div><label><b>Детально</b></label><div class="character-details"></div></div>
+</script>
+
+<script type="text/template" id="character-slot-template">
+    <div class="character-slot" data-slot_name="<%= name %>"><label><%= label %></label> <%= id %> <a class="change-item-button">[&lt;-&gt;]</a></div>
 </script>
 
 

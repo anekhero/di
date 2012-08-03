@@ -30,13 +30,37 @@ var CharacterAbstract = Backbone.Model.extend({
         draft:       true
     },
 
+    itemTypeInSlot : {
+        'head':'',
+        'shoulders':'',
+        'torso':'',
+        'wrists':'',
+        'hands':'',
+        'waist':'',
+        'legs':'',
+        'feet':'',
+        'neck':'',
+        'finger_right':'',
+        'finger_left':'',
+        'hand':'',
+        'off_hand':{'shield':true}
+    },
+
+
+
     initialize : function() {
+        console.log('CharacterAbstract.initialize');
         this.on('change', this.simulate);
 
         this.trigger('change');
     },
 
     set: function(attributes, options) {
+        Backbone.Model.prototype.set.call(this, attributes, options);
+        return this;
+    },
+
+    getItemBySlot: function(attributes, options) {
         Backbone.Model.prototype.set.call(this, attributes, options);
         return this;
     },
