@@ -1,19 +1,18 @@
-// Character View
+// Select Item Dialog
 // --------------
 
-// The DOM element for a todo item...
-var CharacterView = BaseView.extend({
+var SelectItemView = BaseView.extend({
 
     //... is a list tag.
     tagName:  "div",
 
     // Cache the template function for a single item.
-    template: _.template($('#character-template').html()),
-    slotTemplate: _.template($('#character-slot-template').html()),
+    template: _.template($('#select-item-template').html()),
+    itemTemplate: _.template($('#item-in-select-template').html()),
 
     // The DOM events specific to an item.
     events: {
-        "click .change-item-button"   : "selectItem"
+        "click .select-item-button"   : "selectItem"
 //        "dblclick .view"  : "edit",
 //        "click a.destroy" : "clear"
 //        "keypress .edit"  : "updateOnEnter",
@@ -24,22 +23,24 @@ var CharacterView = BaseView.extend({
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {
+        console.log(arguments);
         // @TODO use BaseView bind
-        this.model.bind('change', this.render, this);
-        this.model.bind('destroy', this.remove, this);
+/*        this.model.bind('change', this.render, this);
+        this.model.bind('destroy', this.remove, this);*/
         //this.model.bind('add', this.addOne, this);
     },
 
     // Re-render the titles of the todo item.
     render: function() {
-        console.log('CharacterView.render');
-        this.$el.html(this.template(this.model.toJSON()));
+        console.log('SelectItemView.render');
+        //this.$el.html(this.template(this.model.toJSON()));
+        this.$el.html(this.template());
 
         // ITEMS
-        var o=this;
+/*        var o=this;
         _.each(this.model.get('slots'), function(v,k){
             o.$('.character-items').append(o.slotTemplate({'label':tools.abbr2text(k),'name':k,'id':v}));
-        });
+        });*/
 
 
         /*this.$el.toggleClass('done', this.model.get('done'));
@@ -53,21 +54,15 @@ var CharacterView = BaseView.extend({
         var slot_name = $(e.target).closest('.character-slot').attr('data-slot_name');
         console.log(slot_name);
 
-
-        var view = new SelectItemView({'heroModel':this.model});
-        $("#selectItem").append(view.render().el);
-
-/*        var o = this;
+        var o = this;
         var itemsForSlot = ItemList.filter(function(item){
         if(o.model.itemTypeInSlot[slot_name][item.get("type")]) return true;
         });
         console.log(itemsForSlot);
-
-
         var $si = $('#selectItem');
         _.each(itemsForSlot,function(v){
             $si.append('<div><a href="#">'+v.get('title')+'</a></div>');
-        });*/
+        });
 //         this.$('.character-items').html(this.template(this.model.toJSON()));
 
     },

@@ -22,6 +22,15 @@ body {
         border: #cccccc 1px solid;
         background-color: #eeeeee;
     }
+    #selectItem{
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 300px;
+        padding: 10px;
+        border: #cccccc 1px solid;
+        background-color: #ddffff;
+    }
     .remove-item-button{
         cursor: pointer;
     }
@@ -47,6 +56,7 @@ body {
     <div id="newItem"></div>
     <div id="newCharacter"></div>
     <div id="characterFrame"></div>
+    <div id="selectItem"></div>
 </div>
 
 
@@ -111,6 +121,16 @@ body {
     <div class="character-slot" data-slot_name="<%= name %>"><label><%= label %></label> <%= id %> <a class="change-item-button">[&lt;-&gt;]</a></div>
 </script>
 
+<script type="text/template" id="select-item-template">
+    <div>Select Item</div>
+    <div><div class="items-list"></div></div>
+</script>
+
+<script type="text/template" id="item-in-select-template">
+    <div><a class="select-item-button"><%= name %></a></div>
+</script>
+
+
 
 
 
@@ -136,6 +156,7 @@ body {
 
 <script src="js/app/view/ItemView.js"></script>
 <script src="js/app/view/CreateItemView.js"></script>
+<script src="js/app/view/SelectItemView.js"></script>
 <script src="js/app/view/CharacterView.js"></script>
 <script src="js/app/view/CreateCharacterView.js"></script>
 <script src="js/app/view/AppView.js"></script>
