@@ -36,10 +36,10 @@ var ToolBox = Backbone.Model.extend({
 
 
 
-        'str' : 'Strength',
-        'dex' : 'Dexterity',
-        'int' : 'Intelligence',
-        'vit' : 'Vitality',
+        's_str' : 'Strength',
+        's_dex' : 'Dexterity',
+        's_int' : 'Intelligence',
+        's_vit' : 'Vitality',
 
         'extraGHFG' : 'Extra Globe Health from globes',
 

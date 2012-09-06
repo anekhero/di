@@ -3,9 +3,34 @@ var ItemAbstract = Backbone.Model.extend({
         title:      'Untitled',
         type:       'none',
 
-        stats : {},
+        //stats : {},
+        // all possible stats for item
+        // false - empty
+        stats : {
+            's_str' : false,
+            's_dex' : false,
+            's_int' : false,
+            's_vit' : false
+        },
 
-        draft:       true
+        // stats for visualization
+        stats_ : [
+            {'code':'s_dex', 'val':0},
+            {'code':'s_int', 'val':10}
+        ],
+
+
+        draft:       true,
+
+        key: function(){console.log(['key',arguments,this]);return '555';},
+        value: function(){console.log(['value',arguments,this]);return '555';},
+        www:function() {
+            console.log(['www',arguments,this]);
+            return function(text) {
+                console.log(['fn',arguments,text]);
+                return "<b>" + text + "</b>"
+            }
+        }
     },
 
     statsList : {
@@ -70,29 +95,63 @@ var ItemAbstract = Backbone.Model.extend({
         return this;
     },
 
+    getStats: function(){
+        var r=[];
+        var s= this.get('stats');
+        for(var i in s)
+        {
+            if(s[i]!==false) r.push({'code':i,'val':s[i]});
+        }
+        return r;
+    },
+
+
+    getEmptyStats: function(){
+        var r=[];
+        var s= this.get('stats');
+        for(var i in s)
+        {
+            if(s[i]===false) r.push({'code':i,'val':s[i]});
+        }
+        return r;
+    },
+
+
     /**
      *
      * @param arg1 mixed        stat name or array of stats
      * arguments[2]             stat value (if arg1 is stat name)
      */
     setStats : function(arg1) {
+        console.log(['ItemAbstract.setStats',arguments]);
         var newStats = {};
         var arg2 = (arguments.length>1) ? arguments[1] : '';
-        var currentStats = this.get('stats');
+        var currentStats = _.clone(this.get('stats'));
         var passedStats = arg1;
+        var options = {};
 
         if(typeof arg1 !== 'object')
         {
             passedStats = {};
             passedStats[arg1]=arg2;
         }
+        else
+        {
+            if(arguments[2]) options = arguments[2]
+        }
 
+        _.each(passedStats, function(v,k){
+            if(typeof currentStats[k]!='undefined' && !(currentStats[k]!==false && passedStats[k]=='')) currentStats[k] = passedStats[k];
+        });
+
+/*
         _.each(this.statsList, function(v,k){
             if(passedStats[k]!==undefined) newStats[k] = passedStats[k];
             else if(currentStats[k]) newStats[k] = currentStats[k];
         });
 
-        this.set('stats',newStats);
+*/
+        this.set('stats',currentStats);
         this.trigger('change');
     }
 });

@@ -20,8 +20,8 @@ var CreateItemView = BaseView.extend({
         "click .cancel-item-button"     : "cancelItem",
         "change input[name=title]"    : "changeItem",
         "change select[name=type]"    : "changeItem",
-        "change .item-stat select, .item-stat input"    : "changeItem",
-        "change .item-stat select"      : "check4NewStat"
+        "change .item-stat select, .item-stat input"    : "changeItem"
+        //"change .item-stat select"      : "check4NewStat"
 //        "keypress .edit"  : "updateOnEnter",
 //        "blur .edit"      : "close"
     },
@@ -30,6 +30,7 @@ var CreateItemView = BaseView.extend({
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {
+        console.log('CreateItemView.initialize');
         // @TODO use BaseView bind
         this.model.bind('change', this.render, this);
         this.model.bind('destroy', this.remove, this);
@@ -37,16 +38,18 @@ var CreateItemView = BaseView.extend({
 
         // @TODO move to "once load"
         this.renderItemTypeTemplate();
-        this.renderStatTemplate();
+        //this.renderStatTemplate();
     },
 
     // Re-render the titles of the todo item.
     render: function() {
+        console.log(['CreateItemView.render', _.extend(this.model.toJSON())]);
         this.$el.html(this.template(this.model.toJSON()));
         this.$('select').html(this.itemTypeHTML).val(this.model.get('type'));
         var o=this;
-        _.each(this.model.get('stats'),function(value,name){
-            o.createStat(name,value);
+
+        _.each(this.model.getStats(),function(value){
+            o.createStat(value.code,value.val);
         });
         this.check4NewStat();
         /*this.$el.toggleClass('done', this.model.get('done'));
@@ -66,13 +69,14 @@ var CreateItemView = BaseView.extend({
 
     changeItem: function() {
         console.log('CreateItemView.changeItem');
-        this.model.set('title',this.$('[name=title]').val());
-        this.model.set('type',this.$('[name=type]').val());
 
         var stats = {};
         var t = this.$('.item-stat').map(function(){
             stats[$(this).find('select').val()] = $(this).find('input').val();
         });
+
+        this.model.set('title',this.$('[name=title]').val(),{silent: true});
+        this.model.set('type',this.$('[name=type]').val(),{silent: true});
         this.model.setStats(stats);
     },
 
@@ -92,17 +96,23 @@ var CreateItemView = BaseView.extend({
         console.log('CreateItemView.createStat');
         if(typeof(name)=='undefined')name='';
         if(typeof(value)=='undefined')value='';
-        this.$('.item-stats').append(this.createStatHTML);
+        var selectableStats = this.model.getEmptyStats();
+        if(name){
+            selectableStats.push({'code':name,'val':tools.abbr2text(name)});
+        }
+        tpl = this.renderStatTemplate(selectableStats);
+        this.$('.item-stats').append(tpl);
         this.$('.item-stats').find('select').last().val(name);
         this.$('.item-stats').find('input').last().val(value);
     },
 
-    renderStatTemplate: function() {
+    renderStatTemplate: function(statsList) {
         var stats = {'':''};
-        _.each(this.model.statsList, function(v,k){
-            stats[k] = tools.abbr2text(k);
+        _.each(statsList, function(v){
+            stats[v.code] = tools.abbr2text(v.code);
         });
-        this.createStatHTML = this.createStatTemplate({'stats':stats});
+        //this.createStatHTML = this.createStatTemplate({'stats':stats});
+        return this.createStatTemplate({'stats':stats});
     },
 
     renderItemTypeTemplate: function() {
