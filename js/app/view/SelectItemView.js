@@ -23,7 +23,7 @@ var SelectItemView = BaseView.extend({
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {
-        console.log(arguments);
+        console.log(['SelectItemView.initialize',arguments,this]);
         // @TODO use BaseView bind
 /*        this.model.bind('change', this.render, this);
         this.model.bind('destroy', this.remove, this);*/
@@ -32,15 +32,31 @@ var SelectItemView = BaseView.extend({
 
     // Re-render the titles of the todo item.
     render: function() {
-        console.log('SelectItemView.render');
+        console.log(['SelectItemView.render',arguments,this]);
         //this.$el.html(this.template(this.model.toJSON()));
         this.$el.html(this.template());
 
         // ITEMS
-/*        var o=this;
-        _.each(this.model.get('slots'), function(v,k){
-            o.$('.character-items').append(o.slotTemplate({'label':tools.abbr2text(k),'name':k,'id':v}));
-        });*/
+        var o = this;
+         var itemsForSlot = ItemList.filter(function(item){
+            if(o.options.heroModel.itemTypeInSlot[o.options.slot][item.get("type")]) return true;
+         });
+        console.log(['SelectItemView.render item for slot: ',itemsForSlot]);
+
+
+/*         var $si = $('#selectItem');
+         _.each(itemsForSlot,function(v){
+         $si.append('<div><a href="#">'+v.get('title')+'</a></div>');
+         });*/
+//         this.$('.character-items').html(this.template(this.model.toJSON()));
+
+
+        _.each(itemsForSlot, function(v,k){
+            o.$('.items-list').append(o.itemTemplate({
+                'name' : v.get('title')
+                ,'id' : v.get('id')
+            }));
+        });
 
 
         /*this.$el.toggleClass('done', this.model.get('done'));
@@ -50,21 +66,11 @@ var SelectItemView = BaseView.extend({
 
 
     selectItem: function(e) {
-        console.log('CharacterView.selectItem');
-        var slot_name = $(e.target).closest('.character-slot').attr('data-slot_name');
-        console.log(slot_name);
+        console.log('SelectItemView.selectItem');
+        var item_id = $(e.target).attr('data-id');
+        console.log(item_id);
 
-        var o = this;
-        var itemsForSlot = ItemList.filter(function(item){
-        if(o.model.itemTypeInSlot[slot_name][item.get("type")]) return true;
-        });
-        console.log(itemsForSlot);
-        var $si = $('#selectItem');
-        _.each(itemsForSlot,function(v){
-            $si.append('<div><a href="#">'+v.get('title')+'</a></div>');
-        });
-//         this.$('.character-items').html(this.template(this.model.toJSON()));
-
+        this.remove();
     },
 
     showDetails: function() {

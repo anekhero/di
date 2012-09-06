@@ -65,6 +65,11 @@ var CharacterAbstract = Backbone.Model.extend({
         return this;
     },
 
+    setItemToSlot: function(attributes, options) {
+        Backbone.Model.prototype.set.call(this, attributes, options);
+        return this;
+    },
+
     /**
      *
      * @param arg1 mixed        stat name or array of stats

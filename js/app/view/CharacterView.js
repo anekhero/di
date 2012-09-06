@@ -51,10 +51,10 @@ var CharacterView = BaseView.extend({
     selectItem: function(e) {
         console.log('CharacterView.selectItem');
         var slot_name = $(e.target).closest('.character-slot').attr('data-slot_name');
-        console.log(slot_name);
+        console.log(['CharacterView.selectItem slotname:',slot_name]);
 
 
-        var view = new SelectItemView({'heroModel':this.model});
+        var view = new SelectItemView({'heroModel':this.model,'slot':slot_name});
         $("#selectItem").append(view.render().el);
 
 /*        var o = this;
