@@ -31,7 +31,7 @@ var CharacterView = BaseView.extend({
     },
 
     // Re-render the titles of the todo item.
-    render: function() {
+/*    render: function() {
         console.log('CharacterView.render');
         this.$el.html(this.template(this.model.toJSON()));
 
@@ -40,10 +40,23 @@ var CharacterView = BaseView.extend({
         _.each(this.model.get('slots'), function(v,k){
             o.$('.character-items').append(o.slotTemplate({'label':tools.abbr2text(k),'name':k,'id':v}));
         });
+        return this;
+    },*/
 
 
-        /*this.$el.toggleClass('done', this.model.get('done'));
-        this.input = this.$('.edit');*/
+    render: function() {
+        console.log('CharacterView.render');
+        this.$el.html(this.template(this.model.toJSON()));
+
+        // render items links
+        var o=this;
+        _.each(this.model.get('items'), function(v,k){
+            o.$('.character-items').append(o.slotTemplate({
+                'slotName':k
+                ,'itemName':ItemList.get(v).get('name')
+                ,'itemId':v
+            }));
+        });
         return this;
     },
 

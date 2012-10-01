@@ -35,6 +35,15 @@ var AppView = BaseView.extend({
             this.$("#characterFrame").html(view.render().el);
         }
 
+/*        $.ajax({
+            type: 'GET',
+            url: 'http://eu.battle.net/api/d3/profile/ANEKHERo-2990/hero/17608963',
+            async: false,
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(r){console.log(r);}
+        });*/
+
     },
 
     render: function() {
@@ -73,20 +82,87 @@ var AppView = BaseView.extend({
     createItem: function(e) {
         console.log('AppView:createItem');
         //var item = ItemList.create({title:'New item'});
-        var item = ItemList.create();
+//        var item = ItemList.create();
         //var item = ItemList.get('133e69c4-10f3-3c1f-0c41-1bcb7f1da385');
-console.log(['AppView:createItem -- ',item]);
+/*console.log(['AppView:createItem -- ',item]);
         // @todo remove old view
         var view = new CreateItemView({model: item});
-        this.$("#newItem").html(view.render().el);
+        this.$("#newItem").html(view.render().el);*/
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://eu.battle.net/api/d3/data/item/CkMI1-_wlg8SBwgEFZtFm38dT5fAJB3H0vNlHR4XWqMdO53LyB0SVtXuIgsIARV4QgMAGAAgEDAJOMcEQABIClAOYMcEGLaW2vkPUAJYAA',
+            async: false,
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(r){
+//console.log(['item',r]);
+                var item = ItemList.create(r);
+                //var view = new ItemView({model: item});
+                //this.$("#selectItem").html(view.render().el);
+            }
+        });
+    },
+
+    loadItem: function(tooltipParams, hero, slot) {
+        console.log('AppView:loadItem '+tooltipParams);
+
+        return $.ajax({
+            type: 'GET',
+            url: 'http://eu.battle.net/api/d3/data/'+tooltipParams,
+            async: false,
+            contentType: "application/json",
+            dataType: 'jsonp'
+            ,success: function(r){
+
+                // create item
+                var item = ItemList.create(r);
+
+                // link item to hero
+                hero.setItemToSlot(item, slot);
+            }
+        });
     },
 
     createCharacter: function(e) {
         console.log('AppView:createCharacter');
         //var item = Account.create({name:'New character'});
         // @todo remove old view
-        var view = new CreateCharacterView();
-        this.$("#newCharacter").html(view.render().el);
+/*        var view = new CreateCharacterView();
+        this.$("#newCharacter").html(view.render().el);*/
+        var o = this;
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://eu.battle.net/api/d3/profile/ANEKHERo-2990/hero/17608963',
+            async: false,
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(r){
+
+                // create hero
+                r.heroClass = r.class;
+                var hero = Account.create(r);
+
+                // load items
+                var dfd = [];
+                _.each(r.items, function(v,k){
+                    dfd.push(o.loadItem(v.tooltipParams, hero, k));
+                });
+
+                // after link item to hero...
+                $.when.apply(null, dfd).done(function(){
+
+                    // save item links
+                    hero.save();
+
+                    // show hero
+                    var view = new CharacterView({model: hero});
+                    $("#characterFrame").html(view.render().el);
+                });
+
+            }
+        });
     }
 
 });

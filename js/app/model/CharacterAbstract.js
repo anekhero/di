@@ -1,4 +1,67 @@
 var CharacterAbstract = Backbone.Model.extend({
+    idAttribute: "_id",
+    defaults : {
+        "id" : 0
+        ,"name" : ""
+        ,"class" : ""
+        ,"heroClass": ""
+        ,"gender": 0
+        ,"level": 0
+        ,"paragonLevel": 0
+        ,"hardcore": true
+
+        ,"dead": false
+        ,"last-updated": 0
+
+        ,items:{
+            "head": null
+            ,"torso": null
+            ,"feet": null
+            ,"hands": null
+            ,"shoulders": null
+            ,"legs": null
+            ,"bracers": null
+            ,"mainHand": null
+            ,"offHand": null
+            ,"waist": null
+            ,"rightFinger": null
+            ,"leftFinger": null
+            ,"neck": null
+        }
+
+        ,stats:{
+            "life" : 0
+            ,"damage" : 0.0
+            ,"attackSpeed" : 0.0
+            ,"armor" : 0
+            ,"strength" : 0
+            ,"dexterity" : 0
+            ,"vitality" : 0
+            ,"intelligence" : 0
+            ,"physicalResist" : 0
+            ,"fireResist" : 0
+            ,"coldResist" : 0
+            ,"lightningResist" : 0
+            ,"poisonResist" : 0
+            ,"arcaneResist" : 0
+            ,"critDamage" : 0.0
+            ,"damageIncrease" : 0.0
+            ,"critChance" : 0.0
+            ,"damageReduction" : 0.0
+            ,"blockChance" : 0.0
+            ,"thorns" : 0.0
+            ,"lifeSteal" : 0.0
+            ,"lifePerKill" : 0.0
+            ,"goldFind" : 0.0
+            ,"magicFind" : 0.0
+            ,"blockAmountMin" : 0
+            ,"blockAmountMax" : 0
+            ,"lifeOnHit" : 0.0
+            ,"primaryResource" : 0
+            ,"secondaryResource" : 0
+        }
+    },
+/*
     defaults : {
         name:       'Untitled',
         heroClass:      'none',
@@ -29,6 +92,7 @@ var CharacterAbstract = Backbone.Model.extend({
 
         draft:       true
     },
+*/
 
     itemTypeInSlot : {
         'head':'',
@@ -65,8 +129,14 @@ var CharacterAbstract = Backbone.Model.extend({
         return this;
     },
 
-    setItemToSlot: function(attributes, options) {
+/*    setItemToSlot: function(attributes, options) {
         Backbone.Model.prototype.set.call(this, attributes, options);
+        return this;
+    },*/
+
+    setItemToSlot: function(item, slot) {
+        var currentItems = this.get('items');
+        currentItems[slot] = item.id;
         return this;
     },
 

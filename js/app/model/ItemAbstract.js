@@ -1,7 +1,75 @@
 var ItemAbstract = Backbone.Model.extend({
+    idAttribute: "_id",
     defaults : {
+        "id" : "0",
+        "name" : "",
+        "tooltipParams" : "",
+        "requiredLevel" : 0,
+        "itemLevel" : 0,
+        "bonusAffixes" : 0,
+        "typeName" : "",
+
+        "type" : {
+            "id" : "",
+            "twoHanded" : false
+        },
+
+        "armor" : {
+            "min" : 0.0,
+            "max" : 0.0
+        },
+
+        "attributes" : [ ],
+
+        "attributesRaw" : {
+            "Strength_Item" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Durability_Cur" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Sockets" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Vitality_Item" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Resistance#Poison" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Resistance_All" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Armor_Bonus_Item" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Health_Globe_Bonus_Health" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Armor_Item" : {
+                "min" : 0.0,
+                "max" : 0.0
+            },
+            "Durability_Max" : {
+                "min" : 0.0,
+                "max" : 0.0
+            }
+        },
+
+        "socketEffects" : [ ],
+        "gems" : [ ]
+
+/*
         title:      'Untitled',
-        type:       'none',
+//        type:       'none',
 
         //stats : {},
         // all possible stats for item
@@ -31,6 +99,7 @@ var ItemAbstract = Backbone.Model.extend({
                 return "<b>" + text + "</b>"
             }
         }
+        */
     },
 
     statsList : {

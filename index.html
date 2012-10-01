@@ -22,6 +22,12 @@ body {
         border: #cccccc 1px solid;
         background-color: #eeeeee;
     }
+    #allItems>div{
+        padding: 10px;
+        margin-bottom: 5px;
+        border: #aaaaaa 1px solid;
+        background-color: #f8f8f8;
+    }
     #selectItem{
         position: absolute;
         left: 50%;
@@ -65,11 +71,22 @@ body {
     <div><%= title %></div>
 </script>
 
-<script type="text/template" id="item-template">
+<script type="text/template" id="item-template-old">
     <div>
         <div>* <b><%= type %></b> <%= title %> <a class="remove-item-button">[X]</a><% if (draft) { %> Draft<% } %></div>
 
         <% _.each(stats, function(value,name){ print(name+':'+value) %> ,<% }) %>
+
+    </div>
+</script>
+
+<script type="text/template" id="item-template">
+    <div>
+        <div><b><%= name %></b></div>
+        <div><%= typeName %></div>
+
+        <% _.each(attributes, function(v,k){ %><div> <%= v %></div><% }) %>
+        <% _.each(gems, function(v,k){ %><div> gem: <%= v.attributes %></div><% }) %>
 
     </div>
 </script>
@@ -110,14 +127,26 @@ body {
 
 <script type="text/template" id="character-template">
     <div>Hero</div>
-    <div><b><%= heroClass %></b> <%= name %></div>
-    <div><label><b>Level</b></label><input name="level" value="<%= level %>"></div>
-    <div><label><b>Шмот</b></label><div class="character-items"></div></div>
-    <div><label><b>Статсы</b></label><div class="character-stats"></div></div>
-    <div><label><b>Детально</b></label><div class="character-details"></div></div>
+    <div><label><b>Class</b></label> <span><%= heroClass %></span></div>
+    <div><label><b>Name</b></label> <span><%= name %></span></div>
+    <div><label><b>Level</b></label> <input name="level" value="<%= level %>"></div>
+    <div><label><b>Paragon Level</b></label> <input name="paragonLevel" value="<%= paragonLevel %>"></div>
+    <div><label><b>Шмот</b></label> <div class="character-items"></div></div>
+    <div><label><b>Статсы</b></label> <div class="character-stats">
+        <% _.each(stats, function(v,k){ %>
+        <div><label><i><%= k %>:</i></label> <span><%= v %></span></div>
+        <% }) %>
+    </div></div>
+    <div><label><b>Детально</b></label> <div class="character-details"></div></div>
 </script>
 
 <script type="text/template" id="character-slot-template">
+    <div class="character-slot" data-slot_name="<%= slotName %>"  data-item_id="<%= itemId %>">
+        <label><i><%= slotName %>:</i></label> <span><%= itemName %></span>
+    </div>
+</script>
+
+<script type="text/template" id="character-slot-template-old">
     <div class="character-slot" data-slot_name="<%= name %>"><label><%= label %></label> <%= id %> <a class="change-item-button">[&lt;-&gt;]</a></div>
 </script>
 
@@ -137,7 +166,8 @@ body {
 <script src="js/core/sha1.js"></script>
 <script src="js/core/json2.js"></script>
 <script src="js/core/underscore.js"></script>
-<script src="js/core/zepto.js"></script>
+<!--<script src="js/core/zepto.js"></script>-->
+<script src="js/core/jquery-1.8.2.min.js"></script>
 <script src="js/core/backbone.js"></script>
 <script src="js/core/backbone.localStorage.js"></script>
 <script src="js/core/BaseView.js"></script>
